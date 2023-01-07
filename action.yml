@@ -53,7 +53,7 @@ runs:
           tar -C /tmp -xzf tailscale.tgz
           rm tailscale.tgz
           TSPATH=/tmp/tailscale_${VERSION}_amd64
-          sudo mv "${TSPATH}/tailscale" "${TSPATH}/tailscaled" /usr/bin
+          mv "${TSPATH}/tailscale" "${TSPATH}/tailscaled" /usr/bin
       - name: Run Tailscale
         shell: bash
         env:
@@ -61,8 +61,8 @@ runs:
           ADDITIONAL_ARGS: ${{ inputs.args }}
           HOSTNAME: ${{ inputs.hostname }}
         run: |
-          sudo tailscaled 2>~/tailscaled.log &
+          tailscaled 2>~/tailscaled.log &
           if [ -z "${HOSTNAME}" ]; then
             HOSTNAME="github-$(cat /etc/hostname)"
           fi
-          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
+          tailscale up --authkey ${TAILSCALE_AUTHKEY} --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
